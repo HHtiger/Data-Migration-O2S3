@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} %C %L %M - %msg%n"/>
+        </Console>
+        <File name="base" fileName="base.log" >
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <File name="uploadLogFile" fileName="upload.log" >
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <File name="downloadLogFile" fileName="download.log" >
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <File name="createBucketLogFile" fileName="createBucket.log" >
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <File name="listBucketLogFile" fileName="listBucket.log" >
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+    </Appenders>
+
+    <Loggers>
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="base"/>
+        </Root>
+        <logger name="download" level="warn" additivity="false">
+            <appender-ref ref="Console" />
+            <AppenderRef ref="downloadLogFile"/>
+        </logger>
+        <logger name="upload" level="warn" additivity="false">
+            <appender-ref ref="Console" />
+            <AppenderRef ref="uploadLogFile"/>
+        </logger>
+        <logger name="com.tiger.service.CreateBucketService" level="warn" additivity="false">
+            <appender-ref ref="Console" />
+            <AppenderRef ref="createBucketLogFile"/>
+        </logger>
+        <logger name="com.tiger.service.ListBucketService" level="warn" additivity="false">
+            <appender-ref ref="Console" />
+            <AppenderRef ref="listBucketLogFile"/>
+        </logger>
+    </Loggers>
+</Configuration>

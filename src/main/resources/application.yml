@@ -1,0 +1,92 @@
+#java -jar -Dspring.config.location=application.yml pic_download.jar
+spring:
+  datasource:
+    new:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: oracle.jdbc.driver.OracleDriver
+      url: jdbc:oracle:thin:@172.29.213.202:1521:ORCL
+      username: s3test
+      password: s3test
+      initialSize: 5
+      maxActive: 20
+      validationQuery: SELECT 1 from DUAL
+      testOnBorrow: true
+      testWhileIdle: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      proxyFilters:
+        - !!com.alibaba.druid.filter.stat.StatFilter
+          mergeSql: true
+          slowSqlMillis: 1000
+          logSlowSql: true
+        - !!com.tiger.config.datasource.filter.MyDruidLogFilter
+          connectionLogEnabled: false
+          statementLogEnabled: false
+          resultSetLogEnabled: false
+          statementExecutableSqlLogEnable: true
+          showExecutTime: true
+    old:
+      type: com.alibaba.druid.pool.DruidDataSource
+      driverClassName: oracle.jdbc.driver.OracleDriver
+      url: jdbc:oracle:thin:@172.29.213.202:1521:ORCL
+      username: s3test
+      password: s3test
+      initialSize: 5
+      maxActive: 20
+      validationQuery: SELECT 2 from DUAL
+      testOnBorrow: true
+      testWhileIdle: true
+      testOnReturn: true
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 100
+      proxyFilters:
+        - !!com.alibaba.druid.filter.stat.StatFilter
+          mergeSql: true
+          slowSqlMillis: 1000
+          logSlowSql: true
+        - !!com.tiger.config.datasource.filter.MyDruidLogFilter
+          connectionLogEnabled: false
+          statementLogEnabled: false
+          resultSetLogEnabled: false
+          statementExecutableSqlLogEnable: true
+          showExecutTime: true
+
+
+server:
+  port: 8080
+
+logging:
+  config: classpath:log4j2.xml
+
+job:
+  #0:下载 | 1:上传 | 2:批量建桶 | 3:查看桶列表 | 4:创建指定桶 s3.createSingleBucketName
+  #5:启动访问服务
+  workType: 0
+  qureyRowsNum: 20
+  downloadThreadNum: 20
+  # work when job.workType=1 该项表示是否需要根据jobDone是否存在来控制文件夹下文件是否上传
+  # 注意关闭该项后确保上传文件没有其他程序同时操作
+  openJobDoneMode: true　
+
+file:
+  downloadDir: /tmp/
+
+#该参数在 job.workType=0 生效,但在 job.workType=1|2 时仍需提供可用的参数支持系统启动
+db:
+  xzqh: 510100
+  dbUsername: s3test
+  tablename: TMP_ZPQY2
+
+#该参数在 job.workType=1|2 生效,但在 job.workType=0 时仍需提供可用的参数支持系统启动
+s3:
+  accessKey:
+  secretKey:
+  endpoint: s3.amazonaws.com
+  httpPort: 80
+  signatString: s3
+  bucketLocation: us-weat-1
+  bucketNamePerfix: FounderObjBucket
+  bucketHashNum: 50
+  uploadThreadNum: 5
+  createSingleBucketName: FounderObjBucket-a # work when job.workType=4
