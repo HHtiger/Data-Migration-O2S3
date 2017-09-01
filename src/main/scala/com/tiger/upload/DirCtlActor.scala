@@ -43,7 +43,7 @@ class DirCtlActor(dir: Path, obsClient: ObsClient) extends Actor {
 					.foreach(cd => {
 						
 						log.debug("{},{}", context.dispatcher, cd)
-						context.actorOf(Props.create(classOf[FileCtlActor], cd.toPath, obsClient, jobCountDown).withDispatcher("tiger-dispatcher"), "f_" + System.currentTimeMillis() + "_" + cd.getName)
+						context.actorOf(Props.create(classOf[FileCtlActor], cd.toPath, obsClient, jobCountDown).withDispatcher("blocking-io-dispatcher"), "f_" + System.currentTimeMillis() + "_" + cd.getName)
 						
 					})
 				
